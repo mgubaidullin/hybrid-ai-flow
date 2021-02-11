@@ -1,0 +1,43 @@
+- name: Set a MacOS variables
+  ansible.builtin.set_fact:
+    os: macos
+  when: ansible_system == 'Darwin'
+
+- name: Set a Linux variables
+  ansible.builtin.set_fact:
+    os: linux
+  when: ansible_system == 'Linux'
+
+- name: Create a directory if it does not exist
+  ansible.builtin.file:
+    path: '{{crc.folder}}'
+    state: directory
+    mode: '0755'
+
+- name: Download CRC
+  get_url:
+    url: 'https://mirror.openshift.com/pub/openshift-v4/clients/crc/{{crc.version}}/crc-{{os}}-amd64.tar.xz'
+    dest: '{{crc_folder}}'
+
+- name: Unzip CRC
+  shell: 'gunzip -c {{crc.folder}}/crc-{{os}}-amd64.tar.xz | tar xopf - -C {{crc.folder}}'
+
+- name: Rename CRC
+  command: 'mv {{crc.folder}}/crc-{{os}}-{{crc.version}}-amd64 {{crc.folder}}/crc'
+
+- name: Remove file crc-*-.tar.xz
+  ansible.builtin.file:
+    path: '{{crc.folder}}/crc-{{os}}-amd64.tar.xz'
+    state: absent
+
+- name: Set no telemetry
+  shell: '{{crc.folder}}/crc/crc config set consent-telemetry no'
+
+- name: Delete CRC
+  shell: '{{crc.folder}}/crc/crc delete'
+
+- name: Install CRC
+  shell: '{{crc.folder}}/crc/crc setup'
+
+- name: Start CRC
+  shell: '{{crc.folder}}/crc/crc start -p'

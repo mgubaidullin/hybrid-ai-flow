@@ -1,0 +1,16 @@
+---
+- name: Install Hybrid AI Flow
+  hosts: localhost
+
+  vars:
+    install: false
+    purge: true
+    crc:
+      version: 1.22.0
+      folder: ../openshift
+
+  tasks:
+    - include_tasks: crc.yaml
+      when: install
+
+    - include_tasks: storage.yaml

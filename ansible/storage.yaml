@@ -1,0 +1,48 @@
+- name: Set a MacOS variables
+  ansible.builtin.set_fact:
+    os: mac
+  when: ansible_system == 'Darwin'
+
+- name: Set a Linux variables
+  ansible.builtin.set_fact:
+    os: linux
+  when: ansible_system == 'Linux'
+
+- name: Get Noobaa version
+  shell: curl -s https://api.github.com/repos/noobaa/noobaa-operator/releases/latest | jq -r '.name'
+  register: nv
+
+- name: Download Noobaa
+  get_url:
+    url: 'https://github.com/noobaa/noobaa-operator/releases/download/{{ nv.stdout }}/noobaa-{{os}}-{{ nv.stdout }}'
+    dest: .
+
+- name: Rename Noobaa exec
+  command: 'mv noobaa-{{os}}-{{ nv.stdout }} noobaa'
+
+- name: Changing perm of noobaa, adding "+x"
+  file:
+    dest: noobaa
+    mode: a+x
+
+
+- name: Login as kube:admin
+  shell: $(crc console --credentials | grep kubeadmin | awk -F"'" '{print $2}' )
+
+- name: Install noobaa
+  shell: ./noobaa install --mini --namespace='noobaa'
+  register: result
+
+- debug:
+    var: result.stderr
+
+- name: Create buckets
+  shell: |
+    ./noobaa bucket create training --pv-pool-default-storage-class=noobaa-default-bucket-class --namespace='noobaa'
+    ./noobaa bucket create inference --pv-pool-default-storage-class=noobaa-default-bucket-class --namespace='noobaa'
+  register: result
+
+- name: Remove Noobaa exec
+  file:
+    path: noobaa
+    state: absent
