@@ -8,7 +8,8 @@
     <artifactId>hybrid-ai-flow</artifactId>
     <version>1.0</version>
     <modules>
-        <module>classificator</module>
+        <module>inference</module>
+        <module>training</module>
     </modules>
     <packaging>pom</packaging>
 

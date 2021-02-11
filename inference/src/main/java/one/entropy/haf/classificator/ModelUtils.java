@@ -27,7 +27,7 @@ public class ModelUtils {
 
     public static final Block resNet50 =  ResNetV1.builder()
             .setImageShape(new Shape(3, IMAGE_HEIGHT, IMAGE_WIDTH))
-            .setNumLayers(50)
+            .setNumLayers(20)
             .setOutSize(NUM_CLASSES)
             .build();
 

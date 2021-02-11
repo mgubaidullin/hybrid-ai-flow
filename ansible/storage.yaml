@@ -38,6 +38,7 @@
 
 - name: Create buckets
   shell: |
+    ./noobaa bucket create models --pv-pool-default-storage-class=noobaa-default-bucket-class --namespace='noobaa'
     ./noobaa bucket create training --pv-pool-default-storage-class=noobaa-default-bucket-class --namespace='noobaa'
     ./noobaa bucket create inference --pv-pool-default-storage-class=noobaa-default-bucket-class --namespace='noobaa'
   register: result
