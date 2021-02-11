@@ -8,8 +8,12 @@
 ![DJL](https://img.shields.io/badge/-DJL-orange.svg?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-Apache-green.svg?style=for-the-badge&logo=apache)
 
-A prototype of machine learning inference architecture as a combination of Deep Learning and Rules based decision making \
-managed by BPMN including human-in-the-loop and implemented in Java with Quarkus, Apache Camel, Kogito and Deep Java Library.
+Architecture prototype of image classification system for defect detection \
+designed as combination of Deep Learning and Rules based decision making 
+managed by BPMN including human-in-the-loop. 
+
+Solution is implemented in Java with Quarkus, Apache Camel, Kogito and Deep Java Library 
+installed on OpenShift (CRC)
 
 ## Architecture
 ![Architecture](img/architecture.png)
@@ -23,7 +27,7 @@ by Çağlar Fırat Özgenel is licensed under CC BY 4.0
 #### Image classification service
 
 ## Build and run
-Requires Git and Docker installed.
+Requires Git, Docker, Core Ready Containers and Ansible installed.
 ```
 git clone git@github.com:mgubaidullin/hybrid-ai-flow.git
 .. TODO
