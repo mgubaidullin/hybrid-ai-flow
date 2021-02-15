@@ -8,7 +8,7 @@
 ![DJL](https://img.shields.io/badge/-DJL-orange.svg?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-Apache-green.svg?style=for-the-badge&logo=apache)
 
-Architecture prototype of image classification system for defect detection \
+Architecture prototype of image classification system for defect detection
 designed as combination of Deep Learning and Rules based decision making 
 managed by BPMN including human-in-the-loop. 
 

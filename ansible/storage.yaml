@@ -25,7 +25,6 @@
     dest: noobaa
     mode: a+x
 
-
 - name: Login as kube:admin
   shell: $(crc console --credentials | grep kubeadmin | awk -F"'" '{print $2}' )
 
@@ -39,11 +38,30 @@
 - name: Create buckets
   shell: |
     ./noobaa bucket create models --pv-pool-default-storage-class=noobaa-default-bucket-class --namespace='noobaa'
-    ./noobaa bucket create training --pv-pool-default-storage-class=noobaa-default-bucket-class --namespace='noobaa'
-    ./noobaa bucket create inference --pv-pool-default-storage-class=noobaa-default-bucket-class --namespace='noobaa'
+    ./noobaa bucket create images --pv-pool-default-storage-class=noobaa-default-bucket-class --namespace='noobaa'
+
+- name: Create account
+  shell: |
+    ./noobaa api account_api create_account '{ "name":"hybrid-ai-flow", "email":"hybrid-ai-flow", "has_login":false, "s3_access":true, "allowed_buckets":{"full_permission":true}}' --namespace='noobaa'
+
+- name: Get account information
+  shell: ./noobaa api account_api read_account '{"email":"hybrid-ai-flow"}' --namespace='noobaa'
   register: result
+
+- set_fact:
+    access_key: "{{ result.stdout_lines[1].split(':')[1] | replace(' ', '') }}"
+    secret_key: "{{ result.stdout_lines[2].split(':')[1] | replace(' ', '') }}"
+
+- name: Save keys
+  copy:
+    dest: "noobaa.keys"
+    content: |
+      {{access_key}}
+      {{secret_key}}
 
 - name: Remove Noobaa exec
   file:
     path: noobaa
     state: absent
+
+
