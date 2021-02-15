@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>hybrid-ai-flow</artifactId>
         <groupId>one.entropy.haf</groupId>
+        <artifactId>hybrid-ai-flow</artifactId>
         <version>1.0</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
-
     <artifactId>training</artifactId>
-
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.quarkus</groupId>
+                <artifactId>quarkus-universe-bom</artifactId>
+                <version>1.11.1.Final</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <dependencies>
         <dependency>
             <groupId>io.quarkus</groupId>
@@ -18,9 +27,32 @@
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-resteasy-jaxb</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
             <artifactId>quarkus-openshift</artifactId>
         </dependency>
-        <!-- DJL -->
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-vertx</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-amazon-s3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-resteasy-multipart</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-container-image-docker</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>url-connection-client</artifactId>
+        </dependency>
         <dependency>
             <groupId>ai.djl</groupId>
             <artifactId>api</artifactId>
@@ -36,7 +68,6 @@
             <artifactId>basicdataset</artifactId>
             <version>${djl-version}</version>
         </dependency>
-        <!-- MxNet Engine-->
         <dependency>
             <groupId>ai.djl.mxnet</groupId>
             <artifactId>mxnet-model-zoo</artifactId>
@@ -47,21 +78,20 @@
             <artifactId>mxnet-engine</artifactId>
             <version>${djl-version}</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>ai.djl.mxnet</groupId>-->
-<!--            <artifactId>mxnet-native-auto</artifactId>-->
-<!--            <version>${djl-mxnet-native-version}</version>-->
-<!--            <scope>runtime</scope>-->
-<!--        </dependency>-->
         <dependency>
             <groupId>ai.djl.mxnet</groupId>
-            <artifactId>mxnet-native-mkl</artifactId>
-            <classifier>linux-x86_64</classifier>
-            <scope>runtime</scope>
+            <artifactId>mxnet-native-auto</artifactId>
             <version>${djl-mxnet-native-version}</version>
+            <scope>runtime</scope>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>ai.djl.mxnet</groupId>-->
+<!--            <artifactId>mxnet-native-mkl</artifactId>-->
+<!--            <version>${djl-mxnet-native-version}</version>-->
+<!--            <classifier>linux-x86_64</classifier>-->
+<!--            <scope>runtime</scope>-->
+<!--        </dependency>-->
     </dependencies>
-
     <build>
         <plugins>
             <plugin>
