@@ -4,7 +4,6 @@ import ai.djl.translate.TranslateException;
 import io.quarkus.vertx.ConsumeEvent;
 import io.smallrye.common.annotation.Blocking;
 import io.vertx.mutiny.core.eventbus.EventBus;
-import org.jboss.logging.Logger;
 
 import javax.inject.Inject;
 import javax.ws.rs.POST;
@@ -13,8 +12,6 @@ import java.io.IOException;
 
 @Path("/train")
 public class TrainingResource {
-
-    private static final Logger LOG = Logger.getLogger(TrainingService.class);
 
     @Inject
     EventBus bus;
