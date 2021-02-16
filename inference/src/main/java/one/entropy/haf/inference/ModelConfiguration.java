@@ -1,4 +1,4 @@
-package one.entropy.haf.classificator;
+package one.entropy.haf.inference;
 
 import ai.djl.MalformedModelException;
 import ai.djl.Model;

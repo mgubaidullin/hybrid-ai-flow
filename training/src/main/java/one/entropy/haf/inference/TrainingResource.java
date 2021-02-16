@@ -1,4 +1,4 @@
-package one.entropy.haf.classificator;
+package one.entropy.haf.inference;
 
 import ai.djl.translate.TranslateException;
 import io.quarkus.vertx.ConsumeEvent;
