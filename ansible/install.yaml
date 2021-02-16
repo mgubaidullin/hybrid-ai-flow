@@ -13,4 +13,6 @@
     - include_tasks: crc.yaml
       when: install
 
-    - include_tasks: storage.yaml
+#    - include_tasks: storage.yaml
+
+    - include_tasks: services.yaml

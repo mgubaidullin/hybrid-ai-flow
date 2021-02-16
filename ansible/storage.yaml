@@ -49,15 +49,13 @@
   register: result
 
 - set_fact:
-    access_key: "{{ result.stdout_lines[1].split(':')[1] | replace(' ', '') }}"
-    secret_key: "{{ result.stdout_lines[2].split(':')[1] | replace(' ', '') }}"
+    access_key: "{{ result.stdout_lines[1].split(':')[1] | replace(' ', '') | b64encode}}"
+    secret_key: "{{ result.stdout_lines[2].split(':')[1] | replace(' ', '') | b64encode}}"
 
-- name: Save keys
-  copy:
-    dest: "noobaa.keys"
-    content: |
-      {{access_key}}
-      {{secret_key}}
+- name: Create secret.yaml
+  ansible.builtin.template:
+    src: secret.j2
+    dest: secret.yaml
 
 - name: Remove Noobaa exec
   file:

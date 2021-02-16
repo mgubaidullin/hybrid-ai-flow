@@ -1,0 +1,16 @@
+- name: Delete project
+  shell: oc delete project hybrid-ai-flow
+  ignore_errors: yes
+
+- name: Check project deleted
+  shell: oc get project -o name
+  register: delete_project_result
+  until: delete_project_result.stdout.find("hybrid-ai-flow") == -1
+  retries: 10
+  delay: 5
+
+- name: Create project
+  shell: oc new-project hybrid-ai-flow
+
+- name: Create noobaa secrets
+  shell: oc apply -f secret.yaml
