@@ -1,0 +1,17 @@
+.logo {
+    height: 1.3em;
+    margin-right: 0.3em;
+}
+
+::-webkit-file-upload-button {
+  color: rgb(0, 102, 204);
+  border-color: rgb(0, 102, 204);
+  border-style: solid;
+  border-width: 0.1em;
+  border-radius: 0.2em;
+  background-color: white;
+  font-family: RedHatText, Overpass, overpass, helvetica, arial;
+  font-size: 16px;
+  height: 36px;
+  line-height: 24px;
+}
