@@ -4,6 +4,7 @@
 
   vars:
     install: false
+    storage: true
     purge: true
     crc:
       version: 1.22.0
@@ -13,6 +14,7 @@
     - include_tasks: crc.yaml
       when: install
 
-#    - include_tasks: storage.yaml
+    - include_tasks: storage.yaml
+      when: storage
 
     - include_tasks: services.yaml
