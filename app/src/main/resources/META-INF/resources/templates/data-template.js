@@ -29,11 +29,10 @@ const DataTemplate = `
         <table class="pf-c-table pf-m-grid-md" role="grid">
             <thead>
             <tr>
-                <th>Filename</th>
+                <th class="pf-m-width-40">Filename</th>
                 <th>Size</th>
-                <th>eTag</th>
                 <th>Last Modified</th>
-                <th>Image</th>
+                <th class="pf-m-width-20">Image</th>
             </tr>
             </thead>
             <tr v-show="rows.length === 0" class="pf-m-height-auto" role="row">
@@ -61,10 +60,9 @@ const DataTemplate = `
             <tr v-show="rows.length != 0" v-for="row in rows" :key="row.name">
                 <td>{{row.name}}</td>
                 <td>{{row.size}}</td>
-                <td>{{row.tag}}</td>
                 <td>{{row.lastModified}}</td>
                 <td>
-                    <img class="image" :src="row.url" alt="image"/>
+                    <img class="table-image" :src="row.url" alt="image"/>
                 </td>
             </tr>
         </table>

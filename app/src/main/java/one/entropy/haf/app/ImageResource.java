@@ -48,8 +48,7 @@ public class ImageResource {
         ListObjectsRequest listObjectsRequest = ListObjectsRequest.builder().bucket(bucket).build();
         ListObjectsResponse r = s3.listObjects(listObjectsRequest);
         return r.contents().stream()
-                .map(o -> new ImageDto(o.key(), o.size(), o.eTag(), "/image/download/"+o.key(),
-                        ZonedDateTime.ofInstant(o.lastModified(), ZoneOffset.UTC)))
+                .map(o -> new ImageDto(o.key(), o.size(), o.eTag(), "/image/download/"+o.key(), o.lastModified()))
                 .sorted((o1, o2) -> o1.getLastModified().isAfter(o2.getLastModified()) ? 1 : 0 )
                 .collect(Collectors.toList());
     }

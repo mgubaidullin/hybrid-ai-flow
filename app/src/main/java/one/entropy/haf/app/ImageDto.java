@@ -1,19 +1,15 @@
 package one.entropy.haf.app;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.ser.ZonedDateTimeSerializer;
-
-import java.time.ZonedDateTime;
+import java.time.Instant;
 
 public class ImageDto {
     private String name;
     private Long size;
     private String tag;
     private String url;
-    @JsonSerialize(using = ZonedDateTimeSerializer.class)
-    private ZonedDateTime lastModified;
+    private Instant lastModified;
 
-    public ImageDto(String name, Long size, String tag, String url, ZonedDateTime lastModified) {
+    public ImageDto(String name, Long size, String tag, String url, Instant lastModified) {
         this.name = name;
         this.size = size;
         this.tag = tag;
@@ -53,11 +49,11 @@ public class ImageDto {
         this.url = url;
     }
 
-    public ZonedDateTime getLastModified() {
+    public Instant getLastModified() {
         return lastModified;
     }
 
-    public void setLastModified(ZonedDateTime lastModified) {
+    public void setLastModified(Instant lastModified) {
         this.lastModified = lastModified;
     }
 }
