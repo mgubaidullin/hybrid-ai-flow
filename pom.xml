@@ -10,6 +10,7 @@
     <modules>
         <module>inference</module>
         <module>training</module>
+        <module>app</module>
     </modules>
     <packaging>pom</packaging>
 
