@@ -27,10 +27,6 @@ public class TrainingResource {
     @ConsumeEvent(value = "train")
     @Blocking
     void consumeBlocking(String message) throws IOException, TranslateException {
-        java.nio.file.Path model = training.train();
-        training.store(model);
+        training.execute();
     }
-
-
-
 }

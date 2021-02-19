@@ -20,6 +20,8 @@ import ai.djl.training.loss.Loss;
 import ai.djl.training.util.ProgressBar;
 import ai.djl.translate.Pipeline;
 import ai.djl.translate.TranslateException;
+import io.quarkus.runtime.StartupEvent;
+import io.vavr.control.Try;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.logging.Logger;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -27,6 +29,7 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectResponse;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -47,7 +50,7 @@ public class TrainingService {
     @ConfigProperty(name = "model.folder")
     String modelFolder;
 
-    @ConfigProperty(name = "data.folder",  defaultValue = "data")
+    @ConfigProperty(name = "data.folder", defaultValue = "data")
     String dataFolder;
 
     @ConfigProperty(name = "data.url")
@@ -66,7 +69,20 @@ public class TrainingService {
     public static final int BATCH_SIZE = 64;
     public static final int EPOCH = 1;
 
-    public Path train() throws IOException, TranslateException {
+    void onStart(@Observes StartupEvent ev) {
+        execute();
+    }
+
+    public void execute() {
+        LOG.info("Training start");
+        Try.run(() -> {
+            java.nio.file.Path model = train();
+            store(model);
+        }).andThen(() -> LOG.info("Training done"))
+                .onFailure(throwable -> LOG.error("Error", throwable));
+    }
+
+    private Path train() throws IOException, TranslateException {
         downloadDataset();
         Path modelFileName = createNeuralNet();
         deleteDataset();
@@ -76,7 +92,7 @@ public class TrainingService {
     private Path createNeuralNet() throws IOException, TranslateException {
         LOG.info("Creating NeuralNet");
         // Construct neural network
-        Block resNet =  ResNetV1.builder()
+        Block resNet = ResNetV1.builder()
                 .setImageShape(new Shape(3, IMAGE_HEIGHT, IMAGE_WIDTH))
                 .setNumLayers(20)
                 .setOutSize(NUM_CLASSES)
@@ -129,7 +145,7 @@ public class TrainingService {
             ZipInputStream inputStream = new ZipInputStream(bufferedInputStream);
 
             for (ZipEntry entry; (entry = inputStream.getNextEntry()) != null; ) {
-                if (entry.isDirectory()){
+                if (entry.isDirectory()) {
                     System.out.println(entry.getName());
                 }
                 StringBuilder pathBuilder = new StringBuilder(dataFolder).append('/').append(entry.getName());
@@ -167,7 +183,7 @@ public class TrainingService {
                 .forEach(File::delete);
     }
 
-    public void store(java.nio.file.Path modelFile)  {
+    public void store(java.nio.file.Path modelFile) {
         LOG.info("Storing model in S3");
         PutObjectRequest request = PutObjectRequest.builder()
                 .bucket(bucket)
