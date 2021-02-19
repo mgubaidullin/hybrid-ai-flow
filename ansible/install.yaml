@@ -4,17 +4,21 @@
 
   vars:
     install: false
-    storage: true
-    purge: true
-    crc:
-      version: 1.22.0
-      folder: ../openshift
+    apps: ["training", "app"]
 
   tasks:
-    - include_tasks: crc.yaml
-      when: install
-
     - include_tasks: storage.yaml
       when: storage
 
-    - include_tasks: services.yaml
+    - include_tasks: project.yaml
+
+    - name: Build project
+      shell: mvn clean package
+
+    - name: Apply manifests
+      shell: oc apply -f {{ item }}/target/kubernetes/openshift.yml
+      loop: "{{ apps }}"
+
+    - name: Build
+      shell: oc start-build {{ item }} --from-file=training/target/{{ item }}-1.0-runner.jar --follow
+      loop: "{{ apps }}"
